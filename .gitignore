@@ -1,1 +1,6 @@
 node_modules
+.next
+out
+*.log
+*.err
+.env*.local
