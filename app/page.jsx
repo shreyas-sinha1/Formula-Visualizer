@@ -295,7 +295,6 @@ function Visual({ selectedId, values }) {
 
 export default function Home() {
   const [selectedId, setSelectedId] = useState("binomial");
-  const [theme, setTheme] = useState("light");
   const [valuesByFormula, setValuesByFormula] = useState(() =>
     Object.fromEntries(formulas.map((formula) => [formula.id, defaultsFor(formula.id)]))
   );
@@ -315,30 +314,13 @@ export default function Home() {
   }
 
   return (
-    <div className={theme === "dark" ? "dark" : ""}>
+    <div className="dark">
       <main className="min-h-screen bg-slate-50 px-4 py-6 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[300px_1fr]">
           <aside className="rounded-lg border border-slate-200 bg-white p-4 shadow-soft dark:border-slate-800 dark:bg-slate-900 lg:sticky lg:top-6 lg:h-[calc(100vh-48px)]">
             <div className="mb-5">
               <div className="flex items-center justify-between gap-3">
                 <p className="text-sm font-medium text-teal-700 dark:text-teal-300">Formula Visualizer</p>
-                <div className="flex rounded-md border border-slate-200 bg-slate-100 p-1 dark:border-slate-700 dark:bg-slate-950">
-                  {["light", "dark"].map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    onClick={() => setTheme(option)}
-                    className={`rounded px-2.5 py-1 text-xs font-semibold capitalize transition ${
-                      theme === option
-                        ? "bg-white text-slate-950 shadow-sm dark:bg-teal-400 dark:text-slate-950"
-                        : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100"
-                    }`}
-                    aria-pressed={theme === option}
-                  >
-                    {option}
-                  </button>
-                  ))}
-                </div>
               </div>
               <h1 className="mt-2 text-2xl font-semibold tracking-normal text-slate-950 dark:text-white">Interactive math views</h1>
             </div>
