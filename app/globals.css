@@ -38,3 +38,38 @@ button,
 input {
   font: inherit;
 }
+
+.binomial-piece {
+  animation: assemble-binomial 760ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--delay);
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.28);
+  transition:
+    left 180ms ease,
+    top 180ms ease,
+    width 180ms ease,
+    height 180ms ease;
+}
+
+@keyframes assemble-binomial {
+  0% {
+    opacity: 0;
+    transform: translate(var(--enter-x), var(--enter-y)) scale(0.92);
+  }
+
+  64% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1.025);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .binomial-piece {
+    animation: none;
+    transition: none;
+  }
+}

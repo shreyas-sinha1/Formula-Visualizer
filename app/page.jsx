@@ -109,50 +109,96 @@ function axis() {
 }
 
 function BinomialVisual({ values }) {
+  const [replayKey, setReplayKey] = useState(0);
   const { a, b } = values;
   const total = a + b;
   const size = 280;
   const aSize = (a / total) * size;
   const bSize = size - aSize;
   const result = total * total;
+  const animationKey = `${valueLabel(a)}-${valueLabel(b)}-${replayKey}`;
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_220px]">
-      <div className="flex min-h-[340px] items-center justify-center rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-950">
-        <div className="relative" style={{ width: size, height: size }}>
-          <div
-            className="absolute left-0 top-0 grid place-items-center border border-teal-900/20 bg-teal-500/75 text-sm font-semibold text-teal-950"
-            style={{ width: aSize, height: aSize }}
-          >
-            a^2
-          </div>
-          <div
-            className="absolute top-0 grid place-items-center border border-cyan-900/20 bg-cyan-400/75 text-sm font-semibold text-cyan-950"
-            style={{ left: aSize, width: bSize, height: aSize }}
-          >
-            ab
-          </div>
-          <div
-            className="absolute left-0 grid place-items-center border border-amber-900/20 bg-amber-300/85 text-sm font-semibold text-amber-950"
-            style={{ top: aSize, width: aSize, height: bSize }}
-          >
-            ab
-          </div>
-          <div
-            className="absolute grid place-items-center border border-rose-900/20 bg-rose-300/80 text-sm font-semibold text-rose-950"
-            style={{ left: aSize, top: aSize, width: bSize, height: bSize }}
-          >
-            b^2
+      <div>
+        <div className="flex min-h-[340px] items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-950">
+          <div className="relative" style={{ width: size, height: size }}>
+            <div className="absolute -top-9 left-0 flex h-6 text-xs font-semibold text-slate-400" style={{ width: size }}>
+              <div className="grid place-items-center border-b border-teal-300" style={{ width: aSize }}>
+                a
+              </div>
+              <div className="grid place-items-center border-b border-cyan-300" style={{ width: bSize }}>
+                b
+              </div>
+            </div>
+            <div className="absolute -left-9 top-0 grid w-6 text-xs font-semibold text-slate-400" style={{ height: size }}>
+              <div className="grid place-items-center border-r border-teal-300" style={{ height: aSize }}>
+                a
+              </div>
+              <div className="grid place-items-center border-r border-amber-300" style={{ height: bSize }}>
+                b
+              </div>
+            </div>
+            <div className="absolute inset-0 rounded-sm border-2 border-slate-500/50" />
+            <div
+              key={`${animationKey}-a2`}
+              className="binomial-piece absolute left-0 top-0 grid place-items-center border border-teal-900/20 bg-teal-500/80 text-sm font-semibold text-teal-950"
+              style={{ width: aSize, height: aSize, "--enter-x": "-72px", "--enter-y": "-72px", "--delay": "0ms" }}
+            >
+              a^2
+            </div>
+            <div
+              key={`${animationKey}-ab-top`}
+              className="binomial-piece absolute top-0 grid place-items-center border border-cyan-900/20 bg-cyan-400/80 text-sm font-semibold text-cyan-950"
+              style={{ left: aSize, width: bSize, height: aSize, "--enter-x": "88px", "--enter-y": "-54px", "--delay": "120ms" }}
+            >
+              ab
+            </div>
+            <div
+              key={`${animationKey}-ab-left`}
+              className="binomial-piece absolute left-0 grid place-items-center border border-amber-900/20 bg-amber-300/90 text-sm font-semibold text-amber-950"
+              style={{ top: aSize, width: aSize, height: bSize, "--enter-x": "-72px", "--enter-y": "82px", "--delay": "240ms" }}
+            >
+              ab
+            </div>
+            <div
+              key={`${animationKey}-b2`}
+              className="binomial-piece absolute grid place-items-center border border-rose-900/20 bg-rose-300/85 text-sm font-semibold text-rose-950"
+              style={{ left: aSize, top: aSize, width: bSize, height: bSize, "--enter-x": "86px", "--enter-y": "86px", "--delay": "360ms" }}
+            >
+              b^2
+            </div>
+            <div className="pointer-events-none absolute -bottom-9 left-0 right-0 text-center font-mono text-xs text-slate-400">
+              side length = a + b = {valueLabel(total)}
+            </div>
           </div>
         </div>
+        <button
+          type="button"
+          onClick={() => setReplayKey((current) => current + 1)}
+          className="mt-3 w-full rounded-md border border-teal-400/40 bg-teal-400/10 px-4 py-2 text-sm font-semibold text-teal-100 transition hover:border-teal-300 hover:bg-teal-400/20 focus:outline-none focus:ring-2 focus:ring-teal-300 focus:ring-offset-2 focus:ring-offset-slate-900"
+        >
+          Replay animation
+        </button>
+        <p className="mt-2 text-center text-xs text-slate-400">
+          The pieces combine to show why the full square equals a^2 + 2ab + b^2.
+        </p>
       </div>
-      <Summary
-        lines={[
-          `a = ${valueLabel(a)}, b = ${valueLabel(b)}`,
-          `(a+b)^2 = ${valueLabel(result)}`,
-          `a^2 + 2ab + b^2 = ${valueLabel(a * a + 2 * a * b + b * b)}`,
-        ]}
-      />
+      <div className="space-y-4">
+        <Summary
+          lines={[
+            `a = ${valueLabel(a)}, b = ${valueLabel(b)}`,
+            `(a+b)^2 = ${valueLabel(result)}`,
+            `a^2 + 2ab + b^2 = ${valueLabel(a * a + 2 * a * b + b * b)}`,
+          ]}
+        />
+        <div className="rounded-lg border border-slate-700 bg-slate-900 p-4 text-sm leading-6 text-slate-300">
+          <p className="font-semibold text-slate-100">Watch the assembly</p>
+          <p className="mt-2">
+            One square of side a, two matching a by b rectangles, and one square of side b fill the same outer square.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
